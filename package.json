@@ -1,0 +1,37 @@
+{
+  "name": "ai-backend-engineering-fundumentals",
+  "version": "1.0.0",
+  "description": "Production AI Backend Engineering Fundamentals: Resilience, Retrieval, Cost & Latency, Safe Agents, and Observability in TypeScript",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "bun test",
+    "test:stage1": "bun test stages/01-resilient-llm-calls/tests",
+    "test:stage2": "bun test stages/02-retrieval-rag/tests",
+    "test:stage3": "bun test stages/03-cost-and-latency/tests",
+    "test:stage4": "bun test stages/04-production-agents/tests",
+    "test:stage5": "bun test stages/05-evals-observability/tests",
+    "test:harness": "bun test harness/tests",
+    "test:project": "bun test projects/smart-contact-list/tests",
+    "test:all": "bun test"
+  },
+  "keywords": [
+    "ai-backend",
+    "resilience",
+    "rag",
+    "semantic-cache",
+    "agents",
+    "evals",
+    "observability",
+    "typescript"
+  ],
+  "author": "Simin Shoeibi",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  }
+}
