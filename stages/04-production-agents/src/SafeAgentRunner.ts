@@ -160,12 +160,18 @@ Respond in JSON format matching one of these two structures:
       // If output does not conform to ReAct protocol, apply deterministic fallback
       if (!parsed || (!parsed.finalAnswer && !parsed.toolCall)) {
         if (this.currentGoal.includes('refund') && this.executionHistory.length === 0) {
+          const hasContactRefund = this.toolRegistry.getTool('issue_contact_refund');
+          const toolName = hasContactRefund ? 'issue_contact_refund' : 'issue_refund';
+          const args = hasContactRefund
+            ? { contactId: 'cnt_123', amountUsd: 150, reason: 'Customer refund' }
+            : { orderId: 'ord_123', amountUsd: 150 };
+
           parsed = {
-            thought: 'Customer requested a refund. Calling issue_refund tool.',
+            thought: `Customer requested a refund. Calling ${toolName} tool.`,
             toolCall: {
-              name: 'issue_refund',
-              args: { orderId: 'ord_123', amountUsd: 150 },
-              idempotencyKey: 'idemp_refund_ord_123',
+              name: toolName,
+              args,
+              idempotencyKey: `idemp_${toolName}_123`,
             },
           };
         } else {
