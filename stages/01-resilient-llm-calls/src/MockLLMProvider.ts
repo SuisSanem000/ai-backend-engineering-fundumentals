@@ -58,7 +58,7 @@ export class MockLLMProvider {
     }
 
     // Dynamic echo or default JSON completion
-    if (prompt.includes('Respond in JSON matching schema')) {
+    if (prompt.includes('Respond in JSON') || prompt.includes('schema') || this.defaultResponse !== '{"status":"success","data":"Mock LLM completion"}') {
       return this.defaultResponse;
     }
 
@@ -120,3 +120,4 @@ export class MockLLMProvider {
     });
   }
 }
+
