@@ -12,3 +12,4 @@
 - [MockLLMProvider.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/01-resilient-llm-calls/src/MockLLMProvider.ts): High-fidelity provider simulator supporting latency injection, 429 rate limits, 503 outages, and async token streaming.
 - [ResilientLLMClient.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/01-resilient-llm-calls/src/ResilientLLMClient.ts): Resilient orchestrator combining timeouts, exponential backoff with full jitter, circuit breakers, fallback failover, structured Zod parsing, and streaming.
 - [ResilientLLMClient.test.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/01-resilient-llm-calls/tests/ResilientLLMClient.test.ts): Unit and resilience integration test suite.
+

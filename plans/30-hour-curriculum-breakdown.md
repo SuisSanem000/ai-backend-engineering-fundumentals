@@ -98,3 +98,4 @@ This curriculum is structured for a Senior Web Backend Developer. It translates 
   - Semantic query caching and model routing for contact lookups.
   - Safe agent for contact operations (updating records, merging duplicates, issuing refunds) with approval gates and idempotency.
   - Full observability tracing and CI evaluation suite.
+

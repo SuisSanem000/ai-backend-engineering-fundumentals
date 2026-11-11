@@ -86,3 +86,4 @@ export class HarnessTelemetry {
     this.events.length = 0;
   }
 }
+

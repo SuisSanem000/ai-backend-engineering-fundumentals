@@ -13,3 +13,4 @@ reveiw everything I said first, preare ai asistant files, then go pick up steps 
 reveiw everything for logical and technical aspect, this is educational so keep it reql and concise and educational for a seniro web backend develoer that I am 
 go 
 ```
+

@@ -43,3 +43,4 @@ These tracing tasks guide you through observing and debugging failure modes in L
   3. Verify that subsequent request completely bypasses the primary provider.
   4. Trace invocation routed directly to the fallback model.
   5. Inspect telemetry payload showing `fallback: true` and fallback model identifier.
+

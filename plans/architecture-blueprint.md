@@ -88,3 +88,4 @@ flowchart TD
   - Hierarchical tracing spans record start/end timestamps, token counts, cost, and metadata attributes.
   - Golden test datasets are evaluated across deterministic and LLM-as-judge rubrics.
   - The CI eval runner enforces score thresholds (e.g. minimum 90% accuracy) and fails the build on regression.
+

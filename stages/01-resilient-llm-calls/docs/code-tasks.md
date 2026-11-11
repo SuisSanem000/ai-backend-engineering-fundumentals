@@ -34,3 +34,4 @@ This document defines the implementation requirements and acceptance criteria fo
   - Automatically delegates to a configured `fallbackModel` when primary circuit is open or exhausted.
   - Supports async generator streaming yielding chunks progressively.
   - Validates outputs against Zod schemas, returning strongly-typed data.
+

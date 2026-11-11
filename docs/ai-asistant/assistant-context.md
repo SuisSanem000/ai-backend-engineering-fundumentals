@@ -25,3 +25,4 @@
 - **Stage 4:** Agents in Production (ReAct loop, step budgets, idempotent tools, human approval tokens for critical actions).
 - **Stage 5:** Evals & Observability (Golden datasets, LLM-as-judge, OpenTelemetry-compatible tracing, CI regression gating).
 - **Master Project:** "Smart Contact List" - an intelligent backend service synthesizing all 5 stages.
+

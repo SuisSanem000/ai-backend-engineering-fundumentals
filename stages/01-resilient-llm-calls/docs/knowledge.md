@@ -63,3 +63,4 @@ LLMs are probabilistic and cannot guarantee JSON syntax out-of-the-box.
 - Backend systems require strict contracts.
 - The resilient client forces structured generation and runs responses through runtime Zod schema parsing.
 - If parsing fails, the client triggers a schema-correcting retry prompt before bubbling an exception up to the domain layer.
+

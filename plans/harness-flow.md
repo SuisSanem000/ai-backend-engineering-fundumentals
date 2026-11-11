@@ -51,3 +51,4 @@ flowchart LR
   - End-to-end latency and time-to-first-token (TTFT).
   - Validation failures and retry counts.
 - Emits traces compatible with OpenTelemetry collectors.
+

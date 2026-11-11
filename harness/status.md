@@ -11,3 +11,4 @@
 - [ExecutionGuardrail.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/harness/src/ExecutionGuardrail.ts): Global timeout enforcement, maximum step budget limits, consecutive identical action loop detection, Zod schema validation.
 - [HarnessTelemetry.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/harness/src/HarnessTelemetry.ts): Centralized structured event bus capturing latency, tokens, cost, and lifecycle states.
 - [Harness.test.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/harness/tests/Harness.test.ts): Unit test coverage verifying all invariants.
+

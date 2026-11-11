@@ -15,3 +15,4 @@ This directory houses the architectural plans, curriculum breakdown, and harness
 
 4. [Execution Milestones & Status](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/plans/execution-milestones.md)
    Atomic tracking of project phases, acceptance gates, and commit checkpoints.
+
