@@ -1,6 +1,7 @@
 /**
  * EmbeddingEngine: Computes high-dimensional dense vector representations and geometric distances.
- * Implements unit-norm vector projections and cosine similarity calculations.
+ * Implements sub-word character n-gram feature hashing (FastText/WordPiece style)
+ * with L2 unit normalization for robust semantic and morphological matching.
  */
 
 export class EmbeddingEngine {
@@ -17,7 +18,7 @@ export class EmbeddingEngine {
 
   /**
    * Generates a normalized dense vector embedding from text.
-   * Uses semantic n-gram feature hashing with L2 unit normalization.
+   * Uses word and sub-word character n-gram feature hashing with L2 unit normalization.
    * 
    * @param text - The input string to embed.
    * @returns Float64Array representing a unit-normalized embedding vector.
@@ -28,18 +29,25 @@ export class EmbeddingEngine {
     if (!cleaned) return vector;
 
     const words = cleaned.split(/\W+/).filter(Boolean);
-    const ngrams: string[] = [];
+    const features: string[] = [];
 
-    // Unigrams and Bigrams for semantic local context
-    for (let i = 0; i < words.length; i++) {
-      ngrams.push(words[i]);
-      if (i < words.length - 1) {
-        ngrams.push(`${words[i]}_${words[i + 1]}`);
+    // Word tokens and sub-word character 3-grams / 4-grams for morphological similarity
+    for (const w of words) {
+      features.push(`w:${w}`);
+      if (w.length >= 3) {
+        for (let i = 0; i <= w.length - 3; i++) {
+          features.push(`c3:${w.slice(i, i + 3)}`);
+        }
+      }
+      if (w.length >= 4) {
+        for (let i = 0; i <= w.length - 4; i++) {
+          features.push(`c4:${w.slice(i, i + 4)}`);
+        }
       }
     }
 
-    // Hash each n-gram into vector dimensions
-    for (const term of ngrams) {
+    // Hash each feature into vector dimensions (Murmur/FNV-style hash)
+    for (const term of features) {
       let hash = 0x811c9dc5;
       for (let i = 0; i < term.length; i++) {
         hash ^= term.charCodeAt(i);
@@ -87,4 +95,3 @@ export class EmbeddingEngine {
     return dot;
   }
 }
-
