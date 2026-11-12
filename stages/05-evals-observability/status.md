@@ -12,3 +12,4 @@
 - [CIEvalRunner.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/05-evals-observability/src/CIEvalRunner.ts): Continuous integration harness running benchmarks and blocking degraded prompt deployments in CI pipelines.
 - [Tracer.test.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/05-evals-observability/tests/Tracer.test.ts): Tests verifying hierarchical DAG structure and duration metrics.
 - [CIEvalRunner.test.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/05-evals-observability/tests/CIEvalRunner.test.ts): Tests verifying that good prompts pass CI and degraded prompts are blocked.
+

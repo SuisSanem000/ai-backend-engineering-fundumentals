@@ -34,3 +34,4 @@ These tracing tasks allow you to trace latency savings, cache hits, and routing 
   4. Inbound query: "Analyze the architectural differences between Paxos and Raft consensus protocols."
   5. Trace classifier rule: complex reasoning keywords detected.
   6. Verify route selected: Frontier model (`gemini-1.5-pro` at $3.50/1M).
+

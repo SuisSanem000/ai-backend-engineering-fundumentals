@@ -40,3 +40,4 @@ This document outlines the implementation specifications and acceptance criteria
 - **Acceptance Criteria:**
   - Unites L1 cache, L2 cache, model routing, and batching.
   - Benchmarks composite workloads, demonstrating $\ge 50\%$ cost reduction compared to naïve all-frontier execution.
+

@@ -34,3 +34,4 @@ These tracing tasks demonstrate tracing hierarchical spans and catching prompt r
   4. Observe validation failures on test cases 2 and 4.
   5. Composite score drops to 60% (below 90% threshold).
   6. Verify runner sets exit code 1, blocking the CI build.
+

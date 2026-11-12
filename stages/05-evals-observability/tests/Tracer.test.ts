@@ -35,3 +35,4 @@ describe('Stage 5: Distributed Tracer', () => {
     expect(tree[0].durationMs).toBeGreaterThanOrEqual(0);
   });
 });
+

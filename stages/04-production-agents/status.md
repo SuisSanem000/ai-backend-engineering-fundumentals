@@ -12,3 +12,4 @@
 - [ApprovalGate.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/04-production-agents/src/ApprovalGate.ts): Human-in-the-Loop approval gate issuing and verifying cryptographically random approval tokens.
 - [SafeAgentRunner.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/04-production-agents/src/SafeAgentRunner.ts): Bounded ReAct agent runner with hard step budgets, approval suspension, and resumption post-authorization.
 - [SafeAgentRunner.test.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/04-production-agents/tests/SafeAgentRunner.test.ts): Unit and integration tests covering duplicate payment prevention, step budget exhaustion, and HITL authorization flows.
+

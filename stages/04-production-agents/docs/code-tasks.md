@@ -41,3 +41,4 @@ This document defines the implementation requirements and acceptance criteria fo
   - Enforces `maxSteps` (hard budget).
   - Suspends execution when approval is needed and resumes when token is granted.
   - Implements `issue_refund` safe scenario verifying zero duplicate refunds under retries.
+

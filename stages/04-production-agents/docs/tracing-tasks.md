@@ -37,3 +37,4 @@ These tracing tasks guide you through observing agent loop bounds, idempotency g
   5. Inspect generated `approvalToken` and pending action payload.
   6. Operator invokes `approvalGate.approve(token)`.
   7. Resume agent: Tool executes safely, and agent completes workflow with confirmation.
+

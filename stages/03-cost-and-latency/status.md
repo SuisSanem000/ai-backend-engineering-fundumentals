@@ -12,3 +12,4 @@
 - [RequestBatcher.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/03-cost-and-latency/src/RequestBatcher.ts): Sliding-window micro-batcher grouping concurrent requests to amortize connection overhead.
 - [CostLatencyOptimizer.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/03-cost-and-latency/src/CostLatencyOptimizer.ts): Integrated pipeline demonstrating $>50\%$ cost reduction and sub-millisecond cached responses.
 - [CostLatencyOptimizer.test.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/03-cost-and-latency/tests/CostLatencyOptimizer.test.ts): Unit tests and composite benchmark verifying cost reduction and cache hit ratios.
+

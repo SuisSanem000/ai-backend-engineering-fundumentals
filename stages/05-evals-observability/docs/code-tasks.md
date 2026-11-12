@@ -40,3 +40,4 @@ This document outlines the implementation specifications and acceptance criteria
   - Computes composite pass percentage.
   - Returns `passed: true` if $\ge \text{passThreshold}$, otherwise `passed: false`.
   - Blocks degraded prompt changes in CI environments.
+

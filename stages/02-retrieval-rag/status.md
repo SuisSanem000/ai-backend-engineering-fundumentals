@@ -14,3 +14,4 @@
 - [RAGPipeline.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/02-retrieval-rag/src/RAGPipeline.ts): Grounded QA pipeline injecting top-K candidate chunks and verifying source citation provenance tags.
 - [HybridSearchEngine.test.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/02-retrieval-rag/tests/HybridSearchEngine.test.ts): Unit tests for chunking, BM25, RRF, and freshness decay.
 - [RAGPipeline.test.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/02-retrieval-rag/tests/RAGPipeline.test.ts): Integration tests for citation verification and provenance auditing.
+

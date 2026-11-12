@@ -59,3 +59,4 @@ Prompt engineering without CI evaluation is equivalent to deploying to productio
   3. A composite benchmark score is computed.
   4. If the score falls below the required threshold (e.g. 90%), the runner exits with code `1`, blocking the pull request and preventing deployment.
 - **Reference:** See [CIEvalRunner.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/05-evals-observability/src/CIEvalRunner.ts).
+

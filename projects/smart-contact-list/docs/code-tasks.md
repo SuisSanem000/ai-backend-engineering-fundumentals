@@ -48,3 +48,4 @@ This document outlines the implementation specifications and acceptance criteria
 - **Acceptance Criteria:**
   - Ties all services together under a clean, unified API.
   - Traces every request with OpenTelemetry-compatible `Tracer`.
+

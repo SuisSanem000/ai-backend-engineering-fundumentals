@@ -40,3 +40,4 @@ In high-concurrency systems, processing individual HTTP requests sequentially in
 - Once tripped, the batch is dispatched in parallel or via multi-prompt batch endpoints.
 - Amortizes connection setup costs and maximizes backend pipeline throughput.
 - **Reference:** See [RequestBatcher.ts](file:///Users/siminshoeibizadeh/mienne/Programming/dev/projects/dev-mine/ai-backend-engineering-fundumentals/stages/03-cost-and-latency/src/RequestBatcher.ts).
+

@@ -34,3 +34,4 @@ These tracing tasks allow you to follow the complete lifecycle of a real-world A
   4. Inspect generated `approvalToken`.
   5. Operator invokes `service.approveOperation(token)`.
   6. Verify contact is removed and agent returns `COMPLETED` confirmation.
+

@@ -90,3 +90,4 @@ export class RequestBatcher<T = string> {
     return this.queue.length;
   }
 }
+

@@ -48,3 +48,4 @@ export interface ContactSearchResponse {
   durationMs: number;
   costUsd: number;
 }
+

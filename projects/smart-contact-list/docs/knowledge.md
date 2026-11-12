@@ -36,3 +36,4 @@ Conventional CRM systems (like Salesforce or HubSpot) suffer from low adoption b
 5. The agent issues a secure `ApprovalToken` and serializes state as `NEEDS_APPROVAL`.
 6. An authorized admin approves the token.
 7. The agent resumes, passes the idempotency key, executes the mutation safely, and returns `COMPLETED`.
+

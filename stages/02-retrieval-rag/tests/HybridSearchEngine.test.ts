@@ -112,3 +112,4 @@ describe('Stage 2: Hybrid Search & Retrieval', () => {
     expect(results[0].freshnessMultiplier).toBeGreaterThan(results[1].freshnessMultiplier);
   });
 });
+

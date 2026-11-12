@@ -56,3 +56,4 @@ describe('Stage 2: RAG Pipeline with Citations', () => {
     expect(result.answer).toContain('No relevant documentation found');
   });
 });
+
