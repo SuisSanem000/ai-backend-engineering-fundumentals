@@ -5,6 +5,9 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
+    "start": "bun run src/index.ts",
+    "demo": "bun run src/index.ts",
+    "build": "tsc",
     "test": "bun test",
     "test:stage1": "bun test stages/01-resilient-llm-calls/tests",
     "test:stage2": "bun test stages/02-retrieval-rag/tests",
@@ -35,4 +38,3 @@
     "zod": "^3.24.1"
   }
 }
-

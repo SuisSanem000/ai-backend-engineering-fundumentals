@@ -13,6 +13,7 @@
     "outDir": "./dist"
   },
   "include": [
+    "src/**/*",
     "harness/src/**/*",
     "stages/**/src/**/*",
     "projects/**/src/**/*"

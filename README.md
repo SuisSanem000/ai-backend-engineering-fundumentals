@@ -74,24 +74,42 @@ flowchart LR
 
 ### Prerequisites
 - Node.js runtime (v20+) or Bun runtime (v1.1+)
-- Git
+- Package manager: `pnpm` (v9+) or `bun`
 
 ### Installation
-Dependencies can be installed via npm or bun:
-- Run `npm install` or `bun install`
+Dependencies can be installed via either package manager:
+```bash
+# Using pnpm
+pnpm install
+
+# Or using bun
+bun install
+```
+
+### Running the Live Demonstration
+Execute the end-to-end multi-stage pipeline demonstration:
+```bash
+pnpm start
+# or
+bun run demo
+```
 
 ### Running Test Suites
 To run all 35 tests across the entire repository:
-- Run `npm test` or `bun test`
+```bash
+pnpm test
+# or
+bun test
+```
 
 To run specific stage tests:
-- Stage 1: `npm run test:stage1`
-- Stage 2: `npm run test:stage2`
-- Stage 3: `npm run test:stage3`
-- Stage 4: `npm run test:stage4`
-- Stage 5: `npm run test:stage5`
-- Harness: `npm run test:harness`
-- Master Project: `npm run test:project`
+- Stage 1: `pnpm test:stage1`
+- Stage 2: `pnpm test:stage2`
+- Stage 3: `pnpm test:stage3`
+- Stage 4: `pnpm test:stage4`
+- Stage 5: `pnpm test:stage5`
+- Harness: `pnpm test:harness`
+- Master Project: `pnpm test:project`
 
 ---
 
