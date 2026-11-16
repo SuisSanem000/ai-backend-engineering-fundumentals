@@ -7,6 +7,8 @@
   "scripts": {
     "start": "bun run src/index.ts",
     "demo": "bun run src/index.ts",
+    "ui": "bun run src/server.ts",
+    "serve": "bun run src/server.ts",
     "build": "tsc",
     "test": "bun test",
     "test:stage1": "bun test stages/01-resilient-llm-calls/tests",
