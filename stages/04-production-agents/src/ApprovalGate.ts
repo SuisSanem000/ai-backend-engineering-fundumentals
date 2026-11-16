@@ -3,8 +3,13 @@
  * Issues and tracks one-time cryptographic approval tokens for high-risk operations.
  */
 
-import { randomBytes } from 'node:crypto';
 import { PendingApproval } from './AgentTypes.ts';
+
+function randomHex(byteLength: number): string {
+  const bytes = new Uint8Array(byteLength);
+  globalThis.crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+}
 
 export class ApprovalGate {
   private readonly pendingApprovals = new Map<string, PendingApproval>();
@@ -34,7 +39,7 @@ export class ApprovalGate {
     reason: string,
     idempotencyKey?: string
   ): PendingApproval {
-    const approvalToken = `appr_${randomBytes(12).toString('hex')}`;
+    const approvalToken = `appr_${randomHex(12)}`;
     const now = Date.now();
 
     const pending: PendingApproval = {

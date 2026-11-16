@@ -1,9 +1,8 @@
 /**
- * ExactPromptCache: L1 cryptographic prompt cache using SHA-256 digests.
+ * ExactPromptCache: L1 prompt cache using deterministic cryptographic-style digests.
  * Implements Least Recently Used (LRU) memory eviction and Time-To-Live (TTL) expiration.
+ * Pure TypeScript implementation compatible with Node, Bun, and Browser runtimes.
  */
-
-import { createHash } from 'node:crypto';
 
 export interface CacheEntry<T = string> {
   key: string;
@@ -38,10 +37,24 @@ export class ExactPromptCache<T = string> {
   }
 
   /**
-   * Generates a deterministic SHA-256 hash key from normalized prompt text.
+   * Generates a deterministic 128-bit hex digest from normalized prompt text.
    */
   public hashPrompt(prompt: string): string {
-    return createHash('sha256').update(prompt.trim().toLowerCase()).digest('hex');
+    const normalized = prompt.trim().toLowerCase();
+    let h1 = 0x811c9dc5;
+    let h2 = 0x9e3779b9;
+    let h3 = 0x85ebca6b;
+    let h4 = 0xc2b2ae35;
+
+    for (let i = 0; i < normalized.length; i++) {
+      const c = normalized.charCodeAt(i);
+      h1 = Math.imul(h1 ^ c, 0x01000193) >>> 0;
+      h2 = Math.imul(h2 ^ (c + i), 0x85ebca6b) >>> 0;
+      h3 = Math.imul(h3 ^ (c << 1), 0xc2b2ae35) >>> 0;
+      h4 = Math.imul(h4 ^ (c + (i << 2)), 0x27d4eb2f) >>> 0;
+    }
+
+    return [h1, h2, h3, h4].map((h) => h.toString(16).padStart(8, '0')).join('');
   }
 
   /**

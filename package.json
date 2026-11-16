@@ -10,6 +10,7 @@
     "ui": "bun run src/server.ts",
     "serve": "bun run src/server.ts",
     "build": "tsc",
+    "build:pages": "bun run scripts/build-pages.ts",
     "test": "bun test",
     "test:stage1": "bun test stages/01-resilient-llm-calls/tests",
     "test:stage2": "bun test stages/02-retrieval-rag/tests",

@@ -5,12 +5,16 @@
 
 import { ContactRecord, ContactSearchResponse, SearchResultItem } from './ContactTypes.ts';
 import { HybridSearchEngine } from '../../../stages/02-retrieval-rag/src/HybridSearchEngine.ts';
+import { ExactPromptCache } from '../../../stages/03-cost-and-latency/src/ExactPromptCache.ts';
+import { SemanticCache } from '../../../stages/03-cost-and-latency/src/SemanticCache.ts';
 import { CostLatencyOptimizer } from '../../../stages/03-cost-and-latency/src/CostLatencyOptimizer.ts';
 
 export class ContactSearchService {
   private readonly searchEngine: HybridSearchEngine;
   private readonly optimizer: CostLatencyOptimizer;
   private readonly getContactFn: (id: string) => ContactRecord | undefined;
+  private readonly l1ResultsCache = new ExactPromptCache<SearchResultItem[]>(500);
+  private readonly l2ResultsCache = new SemanticCache<SearchResultItem[]>(0.82, 500);
 
   /**
    * Constructs ContactSearchService with hybrid retrieval engine, optimizer, and contact resolver.
@@ -27,7 +31,7 @@ export class ContactSearchService {
 
   /**
    * Searches contacts using hybrid BM25 + Vector RRF ranking with freshness decay,
-   * wrapped in L1/L2 caching.
+   * wrapped in L1 Exact Hash and L2 Semantic Vector caching.
    * 
    * @param query - Natural language search query.
    * @param topK - Maximum results to return.
@@ -35,25 +39,34 @@ export class ContactSearchService {
    */
   public async search(query: string, topK = 5): Promise<ContactSearchResponse> {
     const start = Date.now();
+    const cacheKey = `${query.trim()}::k=${topK}`;
 
-    // 1. Check L1 / L2 caches via optimizer
-    const optRes = await this.optimizer.execute(`search_contacts:${query}`);
-    if (optRes.cacheHit !== 'NONE') {
-      try {
-        const cachedItems: SearchResultItem[] = JSON.parse(optRes.data);
-        return {
-          query,
-          items: cachedItems,
-          cacheHit: optRes.cacheHit,
-          durationMs: Date.now() - start,
-          costUsd: 0,
-        };
-      } catch {
-        // Fallback to fresh retrieval if cached data format differs
-      }
+    // 1. Check L1 Exact Hash Cache
+    const l1Hit = this.l1ResultsCache.get(cacheKey);
+    if (l1Hit !== null) {
+      return {
+        query,
+        items: l1Hit,
+        cacheHit: 'EXACT',
+        durationMs: Date.now() - start,
+        costUsd: 0,
+      };
     }
 
-    // 2. Fresh Hybrid Retrieval (Dense Vector + Sparse BM25 + Temporal Decay)
+    // 2. Check L2 Semantic Vector Cache
+    const l2Match = this.l2ResultsCache.get(query.trim());
+    if (l2Match !== null) {
+      this.l1ResultsCache.set(cacheKey, l2Match.value);
+      return {
+        query,
+        items: l2Match.value.slice(0, topK),
+        cacheHit: 'SEMANTIC',
+        durationMs: Date.now() - start,
+        costUsd: 0,
+      };
+    }
+
+    // 3. Fresh Hybrid Retrieval (Dense Vector + Sparse BM25 + Temporal Decay)
     const hybridMatches = this.searchEngine.search(query, {
       topK,
       decayLambda: 0.05,
@@ -76,6 +89,15 @@ export class ContactSearchService {
 
     // Sort descending by relevance score
     items.sort((a, b) => b.relevanceScore - a.relevanceScore);
+
+    // Populate both cache tiers for future identical or paraphrased queries
+    if (items.length > 0) {
+      this.l1ResultsCache.set(cacheKey, items);
+      this.l2ResultsCache.set(query.trim(), items);
+    }
+
+    // Account for query embedding / routing overhead via optimizer
+    const optRes = await this.optimizer.execute(`search_contacts:${query}`);
 
     return {
       query,

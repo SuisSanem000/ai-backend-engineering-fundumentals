@@ -57,6 +57,27 @@ export class MockLLMProvider {
       throw error;
     }
 
+    // Smart dynamic extraction for CRM contact ingestion prompts
+    if (prompt.includes('You are a CRM data extraction engine') && prompt.includes('[RAW TEXT]:')) {
+      const rawText = prompt.split('[RAW TEXT]:')[1]?.trim() || '';
+      const emailMatch = rawText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+      const email = emailMatch ? emailMatch[0] : 'contact@example.com';
+
+      const nameMatch = rawText.match(/(?:with|met|contact)\s+((?:Dr\.|Mr\.|Ms\.)?\s*[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)/);
+      const fullName = nameMatch ? nameMatch[1].trim() : 'Sarah Connor';
+
+      const companyMatch = rawText.match(/(?:from|at)\s+([A-Z][a-zA-Z0-9&]+(?:\s+[A-Z][a-zA-Z0-9&]+)*)/);
+      const company = companyMatch ? companyMatch[1].trim() : 'Cyberdyne Systems';
+
+      return JSON.stringify({
+        fullName,
+        company,
+        email,
+        tags: ['enterprise', 'extracted'],
+        summary: rawText.slice(0, 140),
+      });
+    }
+
     // Dynamic echo or default JSON completion
     if (prompt.includes('Respond in JSON') || prompt.includes('schema') || this.defaultResponse !== '{"status":"success","data":"Mock LLM completion"}') {
       return this.defaultResponse;

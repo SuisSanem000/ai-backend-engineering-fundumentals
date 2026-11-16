@@ -4,7 +4,14 @@
  * attributes, status codes, and JSON DAG export for observability visualization.
  */
 
-import { randomBytes } from 'node:crypto';
+/**
+ * Generates random hex strings using the standard Web Crypto API (universal across Node 20+, Bun, and Browsers).
+ */
+function randomHex(byteLength: number): string {
+  const bytes = new Uint8Array(byteLength);
+  globalThis.crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+}
 
 export interface Span {
   traceId: string;
@@ -31,14 +38,14 @@ export class Tracer {
    * Generates a 16-byte hex trace ID.
    */
   public static generateTraceId(): string {
-    return randomBytes(16).toString('hex');
+    return randomHex(16);
   }
 
   /**
    * Generates an 8-byte hex span ID.
    */
   public static generateSpanId(): string {
-    return randomBytes(8).toString('hex');
+    return randomHex(8);
   }
 
   /**
