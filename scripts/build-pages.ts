@@ -1,7 +1,7 @@
 /**
  * Build script for static GitHub Pages deployment.
- * Compiles the TypeScript SmartContactService into a browser-executable bundle
- * and generates dist-web/index.html for zero-server live execution.
+ * Compiles all 5 Stages + Master Project into dist-web/browser-app.js
+ * and generates an interactive multi-stage dashboard at dist-web/index.html.
  */
 
 import fs from 'node:fs';
@@ -27,7 +27,7 @@ const html = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Backend Engineering Fundamentals — Live Interactive Release</title>
+  <title>AI Backend Engineering Fundamentals — All 5 Stages & Master Project</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -51,33 +51,21 @@ const html = `<!DOCTYPE html>
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-sans);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      background: var(--bg); color: var(--text); font-family: var(--font-sans);
+      min-height: 100vh; display: flex; flex-direction: column;
     }
 
     header {
-      background: rgba(17, 24, 39, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--card-border);
-      padding: 16px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border); padding: 16px 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
     }
 
     .brand { display: flex; align-items: center; gap: 12px; }
     .brand-logo {
-      width: 32px; height: 32px;
-      background: linear-gradient(135deg, #3b82f6, #10b981);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; background: linear-gradient(135deg, #3b82f6, #10b981);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 16px; color: white;
     }
     .brand-title { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
@@ -90,83 +78,76 @@ const html = `<!DOCTYPE html>
       padding: 4px 10px; border-radius: 9999px; font-size: 12px; font-weight: 600;
       border: 1px solid rgba(16, 185, 129, 0.3);
     }
-    .badge-dot {
-      width: 6px; height: 6px; background: #10b981; border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.85); }
-    }
+    .badge-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
     main {
       flex: 1; max-width: 1400px; margin: 0 auto; width: 100%;
-      padding: 24px 32px 48px;
-      display: grid; grid-template-columns: 280px 1fr; gap: 24px;
+      padding: 24px 32px 48px; display: grid; grid-template-columns: 280px 1fr; gap: 24px;
     }
 
-    .sidebar { display: flex; flex-direction: column; gap: 8px; }
+    .sidebar { display: flex; flex-direction: column; gap: 6px; }
+    .sidebar-section {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--text-muted); font-weight: 700; padding: 12px 12px 4px;
+    }
+
     .tab-btn {
-      display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+      display: flex; align-items: center; gap: 10px; padding: 11px 14px;
       background: transparent; border: 1px solid transparent; border-radius: 8px;
-      color: var(--text-muted); font-family: var(--font-sans); font-size: 14px; font-weight: 600;
+      color: var(--text-muted); font-family: var(--font-sans); font-size: 13px; font-weight: 600;
       text-align: left; cursor: pointer; transition: all 0.15s ease;
     }
     .tab-btn:hover { background: rgba(255, 255, 255, 0.04); color: var(--text); }
-    .tab-btn.active {
-      background: rgba(59, 130, 246, 0.15);
-      border-color: rgba(59, 130, 246, 0.4);
-      color: #60a5fa;
-    }
-    .tab-icon { font-size: 18px; }
+    .tab-btn.active { background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: #60a5fa; }
 
     .content-card {
       background: var(--card-bg); border: 1px solid var(--card-border);
       border-radius: 12px; padding: 24px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
     .card-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--card-border); }
-    .card-title { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; display: flex; align-items: center; gap: 10px; }
+    .card-title { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
     .card-desc { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
 
-    .form-group { margin-bottom: 16px; }
-    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
-    textarea, input[type="text"] {
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
+    textarea, input[type="text"], input[type="number"], select {
       width: 100%; background: var(--code-bg); border: 1px solid var(--card-border);
-      border-radius: 8px; padding: 12px; color: var(--text);
-      font-family: var(--font-sans); font-size: 14px; outline: none; transition: border-color 0.15s ease;
+      border-radius: 8px; padding: 10px 12px; color: var(--text);
+      font-family: var(--font-sans); font-size: 13px; outline: none;
     }
-    textarea:focus, input[type="text"]:focus { border-color: var(--card-border-focus); }
-    textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+    textarea:focus, input:focus, select:focus { border-color: var(--card-border-focus); }
+    textarea { min-height: 90px; resize: vertical; }
 
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 10px 18px; background: var(--primary); color: white; border: none;
-      border-radius: 8px; font-family: var(--font-sans); font-size: 14px; font-weight: 600;
+      padding: 10px 16px; background: var(--primary); color: white; border: none;
+      border-radius: 8px; font-family: var(--font-sans); font-size: 13px; font-weight: 600;
       cursor: pointer; transition: background 0.15s ease; text-decoration: none;
     }
     .btn:hover { background: var(--primary-hover); }
     .btn-secondary { background: rgba(255, 255, 255, 0.08); color: var(--text); }
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.14); }
+    .btn-danger { background: var(--danger); }
+    .btn-success { background: var(--accent); }
 
-    .metric-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px; margin: 16px 0;
-    }
-    .metric-box {
-      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border);
-      border-radius: 8px; padding: 12px;
-    }
-    .metric-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; }
-    .metric-val { font-size: 18px; font-weight: 700; margin-top: 4px; font-family: var(--font-mono); color: #60a5fa; }
+    .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 16px 0; }
+    .metric-box { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 8px; padding: 12px; }
+    .metric-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+    .metric-val { font-size: 16px; font-weight: 700; margin-top: 4px; font-family: var(--font-mono); color: #60a5fa; }
 
     .output-card {
       background: var(--code-bg); border: 1px solid var(--card-border); border-radius: 8px;
-      padding: 16px; margin-top: 16px; font-family: var(--font-mono); font-size: 13px; overflow-x: auto;
+      padding: 14px; margin-top: 14px; font-family: var(--font-mono); font-size: 12px; overflow-x: auto;
+      line-height: 1.5;
     }
 
     .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-right: 6px; }
     .tag-blue { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
     .tag-green { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+    .tag-red { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+    .tag-amber { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
 
     .approval-banner {
       background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35);
@@ -174,12 +155,13 @@ const html = `<!DOCTYPE html>
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
 
-    .trace-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px; }
-    .trace-table th { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--card-border); color: var(--text-muted); font-weight: 600; font-size: 12px; }
-    .trace-table td { padding: 10px 12px; border-bottom: 1px solid rgba(31, 41, 55, 0.6); font-family: var(--font-mono); }
+    .trace-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 12px; }
+    .trace-table th { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--card-border); color: var(--text-muted); }
+    .trace-table td { padding: 8px 10px; border-bottom: 1px solid rgba(31, 41, 55, 0.6); font-family: var(--font-mono); }
 
     @media (max-width: 768px) {
       main { grid-template-columns: 1fr; padding: 16px; }
+      .grid-2 { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -189,293 +171,321 @@ const html = `<!DOCTYPE html>
       <div class="brand-logo">AI</div>
       <div>
         <div class="brand-title">AI Backend Engineering Fundamentals</div>
-        <div class="brand-sub">Live Interactive Release (Stages 1–5 in TypeScript)</div>
+        <div class="brand-sub">All 5 Stages + Master Project (100% Free Local/Browser Simulation)</div>
       </div>
     </div>
     <div class="nav-links">
-      <div class="badge">
-        <span class="badge-dot"></span>
-        <span>Live Browser Runtime</span>
-      </div>
+      <div class="badge"><span class="badge-dot"></span><span>Zero Paid APIs</span></div>
       <a href="https://github.com/SuisSanem000/ai-backend-engineering-fundumentals" target="_blank" class="btn btn-secondary" style="font-size:12px; padding:6px 12px;">GitHub Repo</a>
     </div>
   </header>
 
   <main>
     <div class="sidebar">
-      <button class="tab-btn active" onclick="switchTab('ingest', this)">
-        <span class="tab-icon">📥</span>
-        <span>1. Resilient Ingest</span>
-      </button>
-      <button class="tab-btn" onclick="switchTab('search', this)">
-        <span class="tab-icon">🔍</span>
-        <span>2 & 3. Hybrid Search</span>
-      </button>
-      <button class="tab-btn" onclick="switchTab('agent', this)">
-        <span class="tab-icon">🛡️</span>
-        <span>4. Safe Agent & HITL</span>
-      </button>
-      <button class="tab-btn" onclick="switchTab('traces', this)">
-        <span class="tab-icon">📊</span>
-        <span>5. OpenTelemetry</span>
-      </button>
+      <div class="sidebar-section">Core 5 Stages</div>
+      <button class="tab-btn active" onclick="switchTab('stage1', this)">⚡ Stage 1: Resilient LLM RPC</button>
+      <button class="tab-btn" onclick="switchTab('stage2', this)">📚 Stage 2: Hybrid RAG & Decay</button>
+      <button class="tab-btn" onclick="switchTab('stage3', this)">💰 Stage 3: Cost & Latency</button>
+      <button class="tab-btn" onclick="switchTab('stage4', this)">🛡️ Stage 4: Safe Agents & HITL</button>
+      <button class="tab-btn" onclick="switchTab('stage5', this)">🧪 Stage 5: CI Evals & Tracing</button>
+
+      <div class="sidebar-section">Master Project</div>
+      <button class="tab-btn" onclick="switchTab('master', this)">📇 Smart Contact List App</button>
     </div>
 
-    <!-- TAB 1: INGEST -->
-    <div id="tab-ingest" class="content-card">
+    <!-- STAGE 1 -->
+    <div id="tab-stage1" class="content-card">
       <div class="card-header">
-        <div class="card-title">📥 Stage 1: Resilient Contact Extraction</div>
-        <div class="card-desc">Converts messy, unstructured text into strongly-typed ContactRecords with timeouts, circuit breakers, and cost metering.</div>
+        <div class="card-title">⚡ Stage 1: LLM Calls Are Backend Calls</div>
+        <div class="card-desc">Simulate HTTP 429 rate limits, latency timeouts, circuit breakers, fallback failover, and per-request cost receipts.</div>
       </div>
 
       <div class="form-group">
-        <label>Unstructured Input Text (Email, Notes, Call Log)</label>
-        <textarea id="ingest-input">Met with Dr. Alex Vance at Aperture Labs. Email is alex.vance@aperture.com. Discussed portal telemetry pipelines and gravitational flux isolation.</textarea>
+        <label>Prompt</label>
+        <input type="text" id="s1-prompt" value="Summarize distributed consensus protocols in 2 sentences.">
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Injected Failures (HTTP 429 Count)</label>
+          <input type="number" id="s1-fails" value="2" min="0" max="5">
+        </div>
+        <div class="form-group">
+          <label>Provider Latency (ms) vs Timeout Budget (ms)</label>
+          <div style="display:flex; gap:8px;">
+            <input type="number" id="s1-latency" value="15" title="Provider Latency">
+            <input type="number" id="s1-timeout" value="500" title="Timeout Budget">
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+        <button class="btn" onclick="runS1(2, 15, 500, true)">Run With 2 Retries (Recovers)</button>
+        <button class="btn btn-secondary" onclick="runS1(5, 15, 500, true)">Trigger Fallback Model</button>
+        <button class="btn btn-danger" onclick="runS1(0, 300, 50, false)">Trigger Timeout Abort</button>
+      </div>
+
+      <div id="s1-metrics" class="metric-grid" style="display:none;">
+        <div class="metric-box"><div class="metric-label">Model Used</div><div id="s1-m-model" class="metric-val">-</div></div>
+        <div class="metric-box"><div class="metric-label">Retries</div><div id="s1-m-retries" class="metric-val">-</div></div>
+        <div class="metric-box"><div class="metric-label">Fallback Used</div><div id="s1-m-fallback" class="metric-val">-</div></div>
+        <div class="metric-box"><div class="metric-label">Simulated Cost</div><div id="s1-m-cost" class="metric-val">-</div></div>
+      </div>
+
+      <div id="s1-out" class="output-card" style="display:none;"><pre><code id="s1-json"></code></pre></div>
+    </div>
+
+    <!-- STAGE 2 -->
+    <div id="tab-stage2" class="content-card" style="display:none;">
+      <div class="card-header">
+        <div class="card-title">📚 Stage 2: Hybrid Retrieval (BM25 + Vectors + RRF + Freshness)</div>
+        <div class="card-desc">Compare keyword + semantic retrieval over 2022 legacy docs vs 2026 updated docs with exponential freshness decay and citations.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Query</label>
+          <input type="text" id="s2-query" value="refund policy calendar days">
+        </div>
+        <div class="form-group">
+          <label>Freshness Decay (lambda)</label>
+          <select id="s2-lambda">
+            <option value="0.05">0.05 (Penalize Old Docs)</option>
+            <option value="0.0">0.00 (No Freshness Filter)</option>
+          </select>
+        </div>
       </div>
 
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <button class="btn" onclick="handleIngest()">Extract & Ingest</button>
-        <button class="btn btn-secondary" onclick="loadSampleText(1)">Sample 1</button>
-        <button class="btn btn-secondary" onclick="loadSampleText(2)">Sample 2</button>
+        <button class="btn" onclick="runS2()">Run Hybrid RAG</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('s2-query').value='ERR_SOCKET_HANGUP_V2'; runS2();">Test Exact Error Code (BM25)</button>
       </div>
 
-      <div id="ingest-metrics" class="metric-grid" style="display:none;">
-        <div class="metric-box">
-          <div class="metric-label">Execution Time</div>
-          <div id="m-ingest-time" class="metric-val">-</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-label">Tokens Used</div>
-          <div id="m-ingest-tokens" class="metric-val">-</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-label">Cost (USD)</div>
-          <div id="m-ingest-cost" class="metric-val">-</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-label">Circuit Status</div>
-          <div id="m-ingest-circuit" class="metric-val" style="color:#34d399">CLOSED</div>
-        </div>
-      </div>
-
-      <div id="ingest-result" class="output-card" style="display:none;">
-        <pre><code id="ingest-json"></code></pre>
-      </div>
+      <div id="s2-out" class="output-card" style="display:none;"><pre><code id="s2-json"></code></pre></div>
     </div>
 
-    <!-- TAB 2: SEARCH -->
-    <div id="tab-search" class="content-card" style="display:none;">
+    <!-- STAGE 3 -->
+    <div id="tab-stage3" class="content-card" style="display:none;">
       <div class="card-header">
-        <div class="card-title">🔍 Stage 2 & 3: Hybrid Search & Multi-Tier Caching</div>
-        <div class="card-desc">Reciprocal Rank Fusion (BM25 + Dense Vectors) with Freshness Decay, intercepted by L1 Exact Hash and L2 Semantic Vector caches.</div>
+        <div class="card-title">💰 Stage 3: Cost & Latency Optimization</div>
+        <div class="card-desc">Observe L1 Exact SHA-256 caching, L2 Semantic cosine vector caching, and Economy vs Frontier model routing.</div>
       </div>
 
       <div class="form-group">
-        <label>Search Query</label>
-        <div style="display:flex; gap:8px;">
-          <input type="text" id="search-input" value="quantum displacement resonance" placeholder="Enter keywords or semantic questions...">
-          <button class="btn" onclick="handleSearch()">Search</button>
-        </div>
+        <label>Prompt</label>
+        <input type="text" id="s3-prompt" value="What is the customer support email?">
       </div>
 
-      <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
-        <button class="btn btn-secondary" style="font-size:12px; padding:4px 10px;" onclick="quickSearch('quantum displacement resonance')">Query A (Original)</button>
-        <button class="btn btn-secondary" style="font-size:12px; padding:4px 10px;" onclick="quickSearch('quantum displacement resonance')">Query A (Exact L1 Hit)</button>
-        <button class="btn btn-secondary" style="font-size:12px; padding:4px 10px;" onclick="quickSearch('quantum displacement resonance mitigation')">Query B (Semantic L2 Hit)</button>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+        <button class="btn" onclick="runS3()">Execute Optimized Call</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('s3-prompt').value='What is the customer support email?'; runS3();">Repeat (L1 Exact Hit)</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('s3-prompt').value='Can you give me the customer support email?'; runS3();">Paraphrase (L2 Semantic Hit)</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('s3-prompt').value='Analyze and compare Paxos vs Raft consensus algorithms step-by-step.'; runS3();">Complex Prompt (Frontier Route)</button>
       </div>
 
-      <div id="search-metrics" class="metric-grid" style="display:none;">
-        <div class="metric-box">
-          <div class="metric-label">Cache Level</div>
-          <div id="m-search-cache" class="metric-val">-</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-label">Latency</div>
-          <div id="m-search-time" class="metric-val">-</div>
-        </div>
-        <div class="metric-box">
-          <div class="metric-label">Cost</div>
-          <div id="m-search-cost" class="metric-val">-</div>
-        </div>
+      <div id="s3-metrics" class="metric-grid" style="display:none;">
+        <div class="metric-box"><div class="metric-label">Cache Hit</div><div id="s3-m-cache" class="metric-val">-</div></div>
+        <div class="metric-box"><div class="metric-label">Routed Model</div><div id="s3-m-model" class="metric-val">-</div></div>
+        <div class="metric-box"><div class="metric-label">Latency</div><div id="s3-m-time" class="metric-val">-</div></div>
+        <div class="metric-box"><div class="metric-label">Simulated Cost</div><div id="s3-m-cost" class="metric-val">-</div></div>
       </div>
 
-      <div id="search-results-list" style="margin-top:16px;"></div>
+      <div id="s3-out" class="output-card" style="display:none;"><pre><code id="s3-json"></code></pre></div>
     </div>
 
-    <!-- TAB 3: AGENT -->
-    <div id="tab-agent" class="content-card" style="display:none;">
+    <!-- STAGE 4 -->
+    <div id="tab-stage4" class="content-card" style="display:none;">
       <div class="card-header">
-        <div class="card-title">🛡️ Stage 4: Safe Agent with Approval Gate</div>
-        <div class="card-desc">ReAct agent bound by strict step budgets, idempotency keys, and Human-in-the-Loop approval tokens for high-risk mutations.</div>
+        <div class="card-title">🛡️ Stage 4: Agents in Production (Idempotency & HITL Approval)</div>
+        <div class="card-desc">Test Stripe-style idempotency keys preventing duplicate refunds, and Human-in-the-Loop approval gates for high-risk actions.</div>
       </div>
 
-      <div class="form-group">
-        <label>Agent Directive</label>
-        <input type="text" id="agent-input" value="Issue a $250 refund to contact Sarah Connor for defective equipment">
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+        <button class="btn" onclick="runS4Agent()">Run Refund Agent (Needs Human Approval)</button>
+        <button class="btn btn-secondary" onclick="runS4Idemp()">Test Idempotent Replay (Key: idemp_999)</button>
       </div>
 
-      <button class="btn" onclick="handleAgentRun()">Execute Agent Directive</button>
-
-      <div id="approval-box" class="approval-banner" style="display:none;">
+      <div id="s4-approval-box" class="approval-banner" style="display:none;">
         <div>
-          <div style="font-weight:700; color:#fbbf24;">⚠️ Action Requires Human Authorization</div>
-          <div id="approval-reason" style="font-size:13px; color:var(--text); margin-top:4px;"></div>
-          <div style="font-size:12px; color:var(--text-muted); margin-top:4px; font-family:var(--font-mono);">
-            Token: <span id="approval-token-text">-</span>
-          </div>
+          <div style="font-weight:700; color:#fbbf24;">⚠️ Agent Suspended: Human Approval Required</div>
+          <div id="s4-reason" style="font-size:12px; margin-top:4px;"></div>
+          <div style="font-size:12px; color:var(--text-muted); margin-top:4px; font-family:var(--font-mono);">Token: <span id="s4-token">-</span></div>
         </div>
-        <button class="btn" style="background:#10b981;" onclick="handleApprove()">Approve & Resume</button>
+        <button class="btn btn-success" onclick="approveS4()">Approve & Resume</button>
       </div>
 
-      <div id="agent-output" class="output-card" style="display:none;">
-        <pre><code id="agent-log"></code></pre>
-      </div>
+      <div id="s4-out" class="output-card" style="display:none;"><pre><code id="s4-json"></code></pre></div>
     </div>
 
-    <!-- TAB 4: TRACES -->
-    <div id="tab-traces" class="content-card" style="display:none;">
+    <!-- STAGE 5 -->
+    <div id="tab-stage5" class="content-card" style="display:none;">
       <div class="card-header">
-        <div class="card-title">📊 Stage 5: OpenTelemetry Distributed Traces</div>
-        <div class="card-desc">Hierarchical trace tree recording start/end timestamps, duration, tokens, cost, and lifecycle states.</div>
+        <div class="card-title">🧪 Stage 5: CI Evals & OpenTelemetry Observability</div>
+        <div class="card-desc">Run Golden Dataset benchmarks to see CI pass good prompts and block degraded prompts automatically.</div>
       </div>
 
-      <button class="btn btn-secondary" onclick="loadTraces()">Refresh Trace Tree</button>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+        <button class="btn btn-success" onclick="runS5('good')">Run CI Eval: Good Prompt (Passes)</button>
+        <button class="btn btn-danger" onclick="runS5('degraded')">Run CI Eval: Bad Prompt (Blocks CI)</button>
+      </div>
 
-      <table class="trace-table">
-        <thead>
-          <tr>
-            <th>Span Name</th>
-            <th>Trace ID</th>
-            <th>Status</th>
-            <th>Duration</th>
-          </tr>
-        </thead>
-        <tbody id="trace-rows">
-          <tr><td colspan="4" style="color:var(--text-muted); text-align:center;">Loading traces...</td></tr>
-        </tbody>
-      </table>
+      <div id="s5-metrics" class="metric-grid" style="display:none;">
+        <div class="metric-box"><div class="metric-label">CI Gate</div><div id="s5-m-gate" class="metric-val">-</div></div>
+        <div class="metric-box"><div class="metric-label">Pass Rate</div><div id="s5-m-rate" class="metric-val">-</div></div>
+        <div class="metric-box"><div class="metric-label">Avg Score</div><div id="s5-m-score" class="metric-val">-</div></div>
+      </div>
+
+      <div id="s5-out" class="output-card" style="display:none;"><pre><code id="s5-json"></code></pre></div>
+    </div>
+
+    <!-- MASTER PROJECT -->
+    <div id="tab-master" class="content-card" style="display:none;">
+      <div class="card-header">
+        <div class="card-title">📇 Master Project: Smart Contact List (All 5 Stages Combined)</div>
+        <div class="card-desc">Ingest unstructured contact notes, search via Hybrid RAG + L1/L2 Cache, and inspect OpenTelemetry traces.</div>
+      </div>
+
+      <div class="form-group">
+        <label>1. Ingest Unstructured Note (Stage 1)</label>
+        <textarea id="m-ingest-txt">Met with Dr. Alex Vance at Aperture Labs. Email is alex.vance@aperture.com. Discussed portal telemetry pipelines.</textarea>
+        <button class="btn" style="margin-top:8px;" onclick="runMasterIngest()">Extract & Index Contact</button>
+      </div>
+
+      <div class="form-group" style="margin-top:20px;">
+        <label>2. Search Contacts (Stage 2 & 3)</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="m-search-txt" value="quantum displacement resonance">
+          <button class="btn" onclick="runMasterSearch()">Search</button>
+        </div>
+      </div>
+
+      <div id="m-out" class="output-card" style="display:none;"><pre><code id="m-json"></code></pre></div>
+
+      <div style="margin-top:20px;">
+        <button class="btn btn-secondary" onclick="loadMasterTraces()">Refresh OpenTelemetry Trace Tree (Stage 5)</button>
+        <table class="trace-table">
+          <thead><tr><th>Span Name</th><th>Trace ID</th><th>Status</th><th>Duration</th></tr></thead>
+          <tbody id="m-traces"></tbody>
+        </table>
+      </div>
     </div>
   </main>
 
   <script src="./browser-app.js"></script>
   <script>
-    let activeToken = null;
+    let s4Token = null;
 
     function switchTab(tabId, btnEl) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.content-card').forEach(c => c.style.display = 'none');
       if (btnEl) btnEl.classList.add('active');
       document.getElementById('tab-' + tabId).style.display = 'block';
-      if (tabId === 'traces') loadTraces();
+      if (tabId === 'master') loadMasterTraces();
     }
 
-    function loadSampleText(num) {
-      const samples = {
-        1: "Met with Sarah Connor from Cyberdyne Systems today. Email: sarah@cyberdyne.com. Discussed neural network defense architecture and infrastructure security.",
-        2: "Sync with Dr. Gordon Freeman at Black Mesa. Email: gordon.freeman@blackmesa.gov. Reviewed quantum displacement safeguards and hazard mitigation."
-      };
-      document.getElementById('ingest-input').value = samples[num] || '';
-    }
-
-    async function handleIngest() {
+    async function runS1(fails, latency, timeout, fallback) {
       await window.__smartContactApp.ready;
-      const text = document.getElementById('ingest-input').value;
-      const data = await window.__smartContactApp.ingestContact(text);
-
-      document.getElementById('ingest-metrics').style.display = 'grid';
-      document.getElementById('m-ingest-time').innerText = data.durationMs + 'ms';
-      document.getElementById('m-ingest-tokens').innerText = data.tokensUsed;
-      document.getElementById('m-ingest-cost').innerText = '$' + Number(data.costUsd).toFixed(6);
-
-      document.getElementById('ingest-result').style.display = 'block';
-      document.getElementById('ingest-json').innerText = JSON.stringify(data.contact, null, 2);
-    }
-
-    async function handleSearch() {
-      await window.__smartContactApp.ready;
-      const q = document.getElementById('search-input').value;
-      const data = await window.__smartContactApp.searchContacts(q, 5);
-
-      document.getElementById('search-metrics').style.display = 'grid';
-      document.getElementById('m-search-cache').innerText = data.cacheHit;
-      document.getElementById('m-search-cache').style.color = data.cacheHit === 'NONE' ? '#9ca3af' : '#34d399';
-      document.getElementById('m-search-time').innerText = data.durationMs + 'ms';
-      document.getElementById('m-search-cost').innerText = '$' + Number(data.costUsd).toFixed(6);
-
-      const list = document.getElementById('search-results-list');
-      list.innerHTML = '';
-
-      if (data.items.length === 0) {
-        list.innerHTML = '<div style="color:var(--text-muted); font-size:13px;">No matching contacts found.</div>';
-        return;
-      }
-
-      data.items.forEach(item => {
-        const card = document.createElement('div');
-        card.style.cssText = 'background:var(--code-bg);border:1px solid var(--card-border);border-radius:8px;padding:14px;margin-bottom:10px;';
-        card.innerHTML = \`
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div style="font-weight:700; font-size:15px; color:#60a5fa;">\${item.contact.fullName}</div>
-            <div>
-              <span class="tag tag-blue">Score: \${item.relevanceScore}</span>
-              <span class="tag tag-green">Freshness: \${item.freshnessMultiplier}</span>
-            </div>
-          </div>
-          <div style="font-size:13px; color:var(--text-muted); margin-top:4px;">\${item.contact.company} • \${item.contact.email}</div>
-          <div style="font-size:12px; color:var(--text); margin-top:8px; line-height:1.4;">\${item.matchedSnippet}</div>
-        \`;
-        list.appendChild(card);
+      const prompt = document.getElementById('s1-prompt').value;
+      const res = await window.__smartContactApp.runStage1Lab({
+        prompt, failCount: fails, latencyMs: latency, timeoutMs: timeout, useFallback: fallback
       });
+      document.getElementById('s1-metrics').style.display = 'grid';
+      document.getElementById('s1-m-model').innerText = res.modelUsed || 'NONE';
+      document.getElementById('s1-m-retries').innerText = res.retriesAttempted ?? 0;
+      document.getElementById('s1-m-fallback').innerText = res.fallbackUsed ? 'YES' : 'NO';
+      document.getElementById('s1-m-cost').innerText = res.receipt ? ('$' + res.receipt.totalCostUsd.toFixed(6)) : '$0';
+      document.getElementById('s1-out').style.display = 'block';
+      document.getElementById('s1-json').innerText = JSON.stringify(res, null, 2);
     }
 
-    function quickSearch(q) {
-      document.getElementById('search-input').value = q;
-      handleSearch();
-    }
-
-    async function handleAgentRun() {
+    async function runS2() {
       await window.__smartContactApp.ready;
-      const directive = document.getElementById('agent-input').value;
-      document.getElementById('approval-box').style.display = 'none';
+      const q = document.getElementById('s2-query').value;
+      const lambda = parseFloat(document.getElementById('s2-lambda').value);
+      const res = await window.__smartContactApp.runStage2Lab(q, lambda);
+      document.getElementById('s2-out').style.display = 'block';
+      document.getElementById('s2-json').innerText = JSON.stringify(res, null, 2);
+    }
 
-      const data = await window.__smartContactApp.executeAgentDirective(directive);
-      document.getElementById('agent-output').style.display = 'block';
-      document.getElementById('agent-log').innerText = JSON.stringify(data, null, 2);
+    async function runS3() {
+      await window.__smartContactApp.ready;
+      const p = document.getElementById('s3-prompt').value;
+      const res = await window.__smartContactApp.runStage3Lab(p);
+      document.getElementById('s3-metrics').style.display = 'grid';
+      document.getElementById('s3-m-cache').innerText = res.result.cacheHit;
+      document.getElementById('s3-m-cache').style.color = res.result.cacheHit === 'NONE' ? '#9ca3af' : '#34d399';
+      document.getElementById('s3-m-model').innerText = res.result.routing.selectedModel;
+      document.getElementById('s3-m-time').innerText = res.result.durationMs + 'ms';
+      document.getElementById('s3-m-cost').innerText = '$' + res.result.costUsd.toFixed(6);
+      document.getElementById('s3-out').style.display = 'block';
+      document.getElementById('s3-json').innerText = JSON.stringify(res, null, 2);
+    }
 
-      if (data.state === 'NEEDS_APPROVAL' && data.pendingApproval) {
-        activeToken = data.pendingApproval.approvalToken;
-        document.getElementById('approval-box').style.display = 'flex';
-        document.getElementById('approval-token-text').innerText = activeToken;
-        document.getElementById('approval-reason').innerText = data.pendingApproval.reason;
+    async function runS4Agent() {
+      await window.__smartContactApp.ready;
+      const res = await window.__smartContactApp.runStage4Agent('Issue a $150 refund for defective order ord_123');
+      document.getElementById('s4-out').style.display = 'block';
+      document.getElementById('s4-json').innerText = JSON.stringify(res, null, 2);
+      if (res.state === 'NEEDS_APPROVAL' && res.pendingApproval) {
+        s4Token = res.pendingApproval.approvalToken;
+        document.getElementById('s4-approval-box').style.display = 'flex';
+        document.getElementById('s4-token').innerText = s4Token;
+        document.getElementById('s4-reason').innerText = res.pendingApproval.reason;
       }
     }
 
-    async function handleApprove() {
-      if (!activeToken) return;
-      const data = await window.__smartContactApp.approveOperation(activeToken);
-      document.getElementById('approval-box').style.display = 'none';
-      document.getElementById('agent-log').innerText = JSON.stringify(data, null, 2);
+    async function approveS4() {
+      if (!s4Token) return;
+      const res = await window.__smartContactApp.approveStage4Agent(s4Token);
+      document.getElementById('s4-approval-box').style.display = 'none';
+      document.getElementById('s4-json').innerText = JSON.stringify(res, null, 2);
     }
 
-    async function loadTraces() {
+    async function runS4Idemp() {
+      await window.__smartContactApp.ready;
+      const res = await window.__smartContactApp.runStage4Idempotency('idemp_999');
+      document.getElementById('s4-out').style.display = 'block';
+      document.getElementById('s4-json').innerText = JSON.stringify(res, null, 2);
+    }
+
+    async function runS5(mode) {
+      await window.__smartContactApp.ready;
+      const res = await window.__smartContactApp.runStage5Eval(mode);
+      document.getElementById('s5-metrics').style.display = 'grid';
+      document.getElementById('s5-m-gate').innerText = res.passed ? 'PASSED' : 'BLOCKED';
+      document.getElementById('s5-m-gate').style.color = res.passed ? '#34d399' : '#ef4444';
+      document.getElementById('s5-m-rate').innerText = (res.passRate * 100).toFixed(0) + '%';
+      document.getElementById('s5-m-score').innerText = res.averageScore;
+      document.getElementById('s5-out').style.display = 'block';
+      document.getElementById('s5-json').innerText = JSON.stringify(res, null, 2);
+    }
+
+    async function runMasterIngest() {
+      await window.__smartContactApp.ready;
+      const txt = document.getElementById('m-ingest-txt').value;
+      const res = await window.__smartContactApp.ingestContact(txt);
+      document.getElementById('m-out').style.display = 'block';
+      document.getElementById('m-json').innerText = JSON.stringify(res, null, 2);
+      loadMasterTraces();
+    }
+
+    async function runMasterSearch() {
+      await window.__smartContactApp.ready;
+      const q = document.getElementById('m-search-txt').value;
+      const res = await window.__smartContactApp.searchContacts(q, 5);
+      document.getElementById('m-out').style.display = 'block';
+      document.getElementById('m-json').innerText = JSON.stringify(res, null, 2);
+      loadMasterTraces();
+    }
+
+    async function loadMasterTraces() {
       await window.__smartContactApp.ready;
       const traces = window.__smartContactApp.getTraceTree();
-      const tbody = document.getElementById('trace-rows');
+      const tbody = document.getElementById('m-traces');
       tbody.innerHTML = '';
-
-      if (!traces || traces.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="color:var(--text-muted); text-align:center;">No traces recorded yet.</td></tr>';
-        return;
-      }
-
-      traces.forEach(span => {
+      traces.forEach(s => {
         const row = document.createElement('tr');
-        row.innerHTML = \`
-          <td style="color:#60a5fa; font-weight:600;">\${span.name}</td>
-          <td style="color:var(--text-muted); font-size:11px;">\${span.traceId.slice(0, 16)}...</td>
-          <td><span class="tag tag-green">\${span.status}</span></td>
-          <td>\${span.durationMs ?? 0}ms</td>
-        \`;
+        row.innerHTML = \`<td style="color:#60a5fa;">\${s.name}</td><td>\${s.traceId.slice(0,12)}...</td><td><span class="tag tag-green">\${s.status}</span></td><td>\${s.durationMs ?? 0}ms</td>\`;
         tbody.appendChild(row);
       });
     }
@@ -484,4 +494,4 @@ const html = `<!DOCTYPE html>
 </html>`;
 
 fs.writeFileSync(path.join(distDir, 'index.html'), html, 'utf-8');
-console.log('✅ Static GitHub Pages site built successfully in dist-web/');
+console.log('✅ Static GitHub Pages site (All 5 Stages + Master Project) built successfully in dist-web/');
